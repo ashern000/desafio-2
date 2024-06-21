@@ -12,5 +12,7 @@
 
         <mapping class="com.compass.infrastructure.entity.AbrigoEntity"/>
         <mapping class="com.compass.infrastructure.entity.PessoaEntity"/>
+        <mapping class="com.compass.infrastructure.entity.EstoqueEntity"/>
+        <mapping class="com.compass.infrastructure.entity.ProdutoEntity"/>
     </session-factory>
 </hibernate-configuration>

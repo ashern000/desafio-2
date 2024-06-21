@@ -60,4 +60,6 @@ public class GerenciarAbrigo {
     public void listarPopulacaoPorFaixaEtariaESexo(Long abrigoId) {
         abrigoRepository.findForYearAndGender(abrigoId);
     }
+
+    public void calcularNecessidadeDeAlimentos(Long abrigoId) {abrigoRepository.calculatesFoodRequirements(abrigoId);};
 }

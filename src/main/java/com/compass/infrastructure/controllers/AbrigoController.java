@@ -31,4 +31,8 @@ public class AbrigoController {
     public void listarPessoasNoAbrigoPorIdadeSexo(Long abrigoId) {
         gerenciarAbrigo.listarPopulacaoPorFaixaEtariaESexo(abrigoId);
     }
+
+    public void necessidadeDeAlimentos(Long abrigoId) {
+        gerenciarAbrigo.calcularNecessidadeDeAlimentos(abrigoId);
+    }
 }

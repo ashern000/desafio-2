@@ -9,5 +9,6 @@ public interface AbrigoRepository {
     Abrigo findByName(String name);
     void insertPeopleInAbrigo(Pessoa pessoa, Long idAbrigo);
     void updatePeopleInAbrigo(Pessoa pessoa, Long idAbrigo);
-    void findForYearAndGender(Long idALong);
+    void findForYearAndGender(Long idAbrigo);
+    void calculatesFoodRequirements(Long idAbrigo);
 }

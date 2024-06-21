@@ -1,6 +1,7 @@
 package com.compass.infrastructure.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "abrigo")
 @Data
 @NoArgsConstructor
+@Getter
 public class AbrigoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

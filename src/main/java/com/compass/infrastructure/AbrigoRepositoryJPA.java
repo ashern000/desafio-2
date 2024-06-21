@@ -114,6 +114,76 @@ public class AbrigoRepositoryJPA implements AbrigoRepository {
         }
     }
 
+    public void calculatesFoodRequirements(Long idAbrigo) {
+        try (Session session = sessionFactory.openSession()) {
+            AbrigoEntity abrigoEntity = session.get(AbrigoEntity.class, idAbrigo);
+            if (abrigoEntity != null) {
+                Map<String, Map<Sexo, Long>> populacaoAgrupada = abrigoEntity.getPessoas().stream()
+                        .collect(Collectors.groupingBy(this::determinarFaixaEtaria,
+                                Collectors.groupingBy(PessoaEntity::getSexo, Collectors.counting())));
+
+                System.out.println("Necessidade de alimentos para o Abrigo " + abrigoEntity.getNomeAbrigo() + ":");
+                populacaoAgrupada.forEach((faixaEtaria, grupoPorSexo) -> {
+                    grupoPorSexo.forEach((sexo, count) -> {
+                        System.out.println(count);
+                        int necessidadeArroz = 0;
+                        int necessidadeFeijao = 0;
+                        int necessidadeLeiteEmPo = 0;
+                        int necessidadeCafeEmPo = 0;
+
+                        switch (faixaEtaria) {
+                            case "Crianças até 3 anos":
+                                necessidadeArroz = 35 * count.intValue();
+                                necessidadeFeijao = 15 * count.intValue();
+                                break;
+                            case "Crianças de 4 a 8 anos":
+                                necessidadeArroz = 50 * count.intValue();
+                                necessidadeFeijao = 25 * count.intValue();
+                                break;
+                            case "Crianças de 9 a 12 anos":
+                                necessidadeArroz = 66 * count.intValue();
+                                necessidadeFeijao = 33 * count.intValue();
+                                break;
+                            case "Mulheres Adolescentes (13 a 18 anos)":
+                                necessidadeArroz = 83 * count.intValue();
+                                necessidadeFeijao = 42 * count.intValue();
+                                necessidadeCafeEmPo = 20 * count.intValue();
+                                break;
+                            case "Homens Adolescentes (13 a 18 anos)":
+                                necessidadeArroz = 100 * count.intValue();
+                                necessidadeFeijao = 50 * count.intValue();
+                                necessidadeCafeEmPo = 20 * count.intValue();
+                                break;
+                            case "Mulheres Adultas (19 a 59 anos)":
+                                necessidadeArroz = 83 * count.intValue();
+                                necessidadeFeijao = 42 * count.intValue();
+                                necessidadeCafeEmPo = 30 * count.intValue();
+                                break;
+                            case "Homens Adultos (19 a 59 anos)":
+                                necessidadeArroz = 100 * count.intValue();
+                                necessidadeFeijao = 50 * count.intValue();
+                                necessidadeCafeEmPo = 30 * count.intValue();
+                                break;
+                            case "Idosos (a partir de 60 anos)":
+                                necessidadeArroz = 66 * count.intValue();
+                                necessidadeFeijao = 33 * count.intValue();
+                                necessidadeCafeEmPo = 20 * count.intValue();
+                                break;
+                        }
+
+                        System.out.println("Faixa Etária: " + faixaEtaria + ", Sexo: " + sexo);
+                        System.out.println("  Necessidade de Arroz: " + necessidadeArroz + "g");
+                        System.out.println("  Necessidade de Feijão: " + necessidadeFeijao + "g");
+                        System.out.println("  Necessidade de Leite em Pó: " + necessidadeLeiteEmPo + "g");
+                        System.out.println("  Necessidade de Café em Pó: " + necessidadeCafeEmPo + "g");
+                    });
+                });
+            } else {
+                System.out.println("Abrigo não encontrado!");
+            }
+        }
+    }
+
     @Override
     public void updatePeopleInAbrigo(Pessoa pessoa, Long idAbrigo) {
         try (Session session = sessionFactory.openSession()) {
@@ -139,12 +209,15 @@ public class AbrigoRepositoryJPA implements AbrigoRepository {
 
     private String determinarFaixaEtaria(PessoaEntity pessoa) {
         int idade = pessoa.getIdade();
+        Sexo sexo = pessoa.getSexo();
         if (idade <= 3) return "Crianças até 3 anos";
         if (idade <= 8) return "Crianças de 4 a 8 anos";
         if (idade <= 12) return "Crianças de 9 a 12 anos";
-        if (idade <= 18) return "Adolescentes de 13 a 18 anos";
-        if (idade <= 59) return "Adultos de 19 a 59 anos";
-        return "Idosos a partir de 60 anos";
+        if (idade <= 18) return sexo == Sexo.MASCULINO ? "Homens Adolescentes (13 a 18 anos)" : "Mulheres Adolescentes (13 a 18 anos)";
+        if (idade <= 59) return sexo == Sexo.MASCULINO ? "Homens Adultos (19 a 59 anos)" : "Mulheres Adultas (19 a 59 anos)";
+        return "Idosos (a partir de 60 anos)";
     }
 
+    public static class EstoqueRepositorJPA {
+    }
 }
