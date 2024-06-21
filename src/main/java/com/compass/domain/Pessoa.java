@@ -1,15 +1,17 @@
 package com.compass.domain;
 
+import com.compass.domain.enums.Sexo;
+
 import java.time.LocalDateTime;
 
 public class Pessoa extends EntityDomain {
     private String nome;
     private int idade;
-    private String sexo;
+    private Sexo sexo;
     private LocalDateTime dataHoraEntrada;
     private LocalDateTime dataHoraSaida;
 
-    public Pessoa(String nome, int idade, String sexo) {
+    public Pessoa(String nome, int idade, Sexo sexo) {
         this.nome = nome;
         this.idade = idade;
         this.sexo = sexo;
@@ -25,6 +27,8 @@ public class Pessoa extends EntityDomain {
 
     public LocalDateTime getDataHoraSaida() { return dataHoraSaida;}
 
+    public LocalDateTime getDataHoraEntrada() {return dataHoraEntrada;};
+
     public String getNome() {
         return nome;
     }
@@ -33,8 +37,13 @@ public class Pessoa extends EntityDomain {
         return idade;
     }
 
-    public String getSexo() {
+    public Sexo getSexo() {
         return sexo;
+    }
+
+    @Override
+    public String toString () {
+        return "Pessoa: " + nome + " Sexo: " + sexo + " Saída: " + getDataHoraSaida() + " Entrada:" + dataHoraEntrada;
     }
 }
 

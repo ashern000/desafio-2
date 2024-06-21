@@ -21,6 +21,7 @@ public class Abrigo extends EntityDomain{
 
     public void saida(Pessoa pessoa) {
         pessoa.registrarSaida();
+        this.pessoas.add(pessoa);
     }
 
     public List<Pessoa> listarPessoasNoAbrigo() {
@@ -43,5 +44,10 @@ public class Abrigo extends EntityDomain{
 
     public void setPessoas(List<Pessoa> pessoas) {
         this.pessoas = pessoas;
+    }
+
+    @Override
+    public String toString () {
+        return "Abrigo: " + nomeAbrigo;
     }
 }

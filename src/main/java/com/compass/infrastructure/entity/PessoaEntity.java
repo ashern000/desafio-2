@@ -1,5 +1,6 @@
 package com.compass.infrastructure.entity;
 
+import com.compass.domain.enums.Sexo;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +19,12 @@ public class PessoaEntity {
     private Long id;
     private String nome;
     private int idade;
-    private String sexo;
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
     private LocalDateTime dataHoraEntrada;
     private LocalDateTime dataHoraSaida;
 
-    public PessoaEntity(String nome, int idade, String sexo) {
+    public PessoaEntity(String nome, int idade, Sexo sexo) {
         this.nome = nome;
         this.idade = idade;
         this.sexo = sexo;

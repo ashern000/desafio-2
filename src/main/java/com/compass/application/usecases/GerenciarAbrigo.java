@@ -16,8 +16,10 @@ public class GerenciarAbrigo {
     public void registrarEntrada(Long abrigoId, Pessoa pessoa) {
         Abrigo abrigo = abrigoRepository.findById(abrigoId);
         if (abrigo != null) {
+            pessoa.registrarEntrada();
             abrigo.entrada(pessoa);
-            abrigoRepository.save(abrigo);
+            System.out.println(abrigo.listarPessoasNoAbrigo());
+            abrigoRepository.insertPeopleInAbrigo(pessoa, abrigoId);
         } else {
             // Tratamento de erro: abrigo não encontrado
             System.out.println("Abrigo não encontrado!");
@@ -29,6 +31,7 @@ public class GerenciarAbrigo {
         if (abrigo != null) {
 
             abrigo.saida(pessoa);
+            System.out.println(pessoa.toDict());
             abrigoRepository.save(abrigo);
         } else {
             // Tratamento de erro: abrigo não encontrado
@@ -46,5 +49,15 @@ public class GerenciarAbrigo {
             System.out.println("Abrigo não encontrado!");
             return null;
         }
+    }
+
+    public void cadastrarAbrigo(String nomeAbrigo) {
+        Abrigo abrigo = new Abrigo(nomeAbrigo);
+        abrigoRepository.save(abrigo);
+    }
+
+
+    public void listarPopulacaoPorFaixaEtariaESexo(Long abrigoId) {
+        abrigoRepository.findForYearAndGender(abrigoId);
     }
 }
